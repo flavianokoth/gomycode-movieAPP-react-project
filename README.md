@@ -24,7 +24,7 @@ CSS (Styling)
 sh
 Copy
 Edit
-git clone https://github.com/your-username/movie-app.git
+git clone https://github.com/flavianokoth/gomycode-movieAPP-react-project.git
 cd movie-app
 2️⃣ Install dependencies
 

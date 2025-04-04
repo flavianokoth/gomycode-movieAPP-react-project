@@ -1,35 +1,64 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React, { useState } from "react";
+import MovieList from "./components/MovieList";
+import Filter from "./components/Filter";
 
-function App() {
-  const [count, setCount] = useState(0)
+const App = () => {
+  const [movies, setMovies] = useState([
+    {
+      title: "Inception",
+      description: "A mind-bending thriller by Christopher Nolan.",
+      posterURL: "https://image.url/inception.jpg",
+      rating: 8.8,
+    },
+    {
+      title: "Interstellar",
+      description: "A space exploration movie.",
+      posterURL: "https://image.url/interstellar.jpg",
+      rating: 8.6,
+    },
+  ]);
+
+  const [filteredMovies, setFilteredMovies] = useState(movies);
+
+  // Function to add a new movie
+  const addMovie = () => {
+    const newMovie = {
+      title: prompt("Enter movie title:"),
+      description: prompt("Enter movie description:"),
+      posterURL: prompt("Enter poster URL:"),
+      rating: parseFloat(prompt("Enter rating:")),
+    };
+
+    if (newMovie.title && newMovie.description && newMovie.posterURL && !isNaN(newMovie.rating)) {
+      setMovies([...movies, newMovie]);
+      setFilteredMovies([...movies, newMovie]);
+    } else {
+      alert("Invalid input. Please try again.");
+    }
+  };
+
+  // Function to filter movies
+  const filterMovies = (title, rating) => {
+    let filtered = movies;
+    if (title) {
+      filtered = filtered.filter((movie) =>
+        movie.title.toLowerCase().includes(title.toLowerCase())
+      );
+    }
+    if (rating) {
+      filtered = filtered.filter((movie) => movie.rating >= parseFloat(rating));
+    }
+    setFilteredMovies(filtered);
+  };
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+    <div className="App">
+      <h1>🎬 Movie App</h1>
+      <Filter onFilter={filterMovies} />
+      <button onClick={addMovie}>➕ Add Movie</button>
+      <MovieList movies={filteredMovies} />
+    </div>
+  );
+};
 
-export default App
+export default App;
